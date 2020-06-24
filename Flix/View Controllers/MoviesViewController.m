@@ -8,9 +8,11 @@
 
 #import "MoviesViewController.h"
 
-@interface MoviesViewController ()
+@interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
 
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *movies;
+
 @end
 
 @implementation MoviesViewController
@@ -18,6 +20,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    // Set self as dataSource and delegate for the tableView
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     
     // Set the url for the network request
     NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
@@ -42,12 +48,32 @@
                for (NSDictionary *movie in self.movies) {
                    NSLog(@"%@", movie[@"title"]);
                }
+               
+               [self.tableView  reloadData];
                // TODO: Get the array of movies
                // TODO: Store the movies in a property to use elsewhere
                // TODO: Reload your table view data
            }
        }];
     [task resume];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.movies.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
+    
+    
+    // Get the movie for the corresponding row from the class property
+    NSDictionary *movie = self.movies[indexPath.row];
+    
+    // Set the text of the cell to the movie title
+    cell.textLabel.text = movie[@"title"];
+    
+    return cell;
 }
 
 /*
