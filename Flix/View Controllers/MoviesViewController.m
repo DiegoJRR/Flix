@@ -8,24 +8,19 @@
 
 #import "MoviesViewController.h"
 #import "MovieCell.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *movies;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
 @implementation MoviesViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    // Set self as dataSource and delegate for the tableView
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    
+-(void) fetchMovies {
     // Set the url for the network request
     NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
     
@@ -55,8 +50,28 @@
                // TODO: Store the movies in a property to use elsewhere
                // TODO: Reload your table view data
            }
+        
+        [self.refreshControl endRefreshing];
        }];
     [task resume];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    // Set self as dataSource and delegate for the tableView
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    
+    [self fetchMovies];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    
+    // Create target-action pair with the control value change that calls the fetchMovies function
+    [self.refreshControl addTarget:self action:@selector(fetchMovies) forControlEvents:UIControlEventValueChanged];
+    [self.tableView insertSubview:self.refreshControl atIndex:0];
+
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -74,6 +89,17 @@
     // Set the text of the cell to the movie title
     cell.titleLabel.text = movie[@"title"];
     cell.descriptionLabel.text = movie[@"overview"];
+    
+    NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
+    NSString *posterURLString = movie[@"poster_path"];
+    
+    NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
+    
+    NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
+    
+    cell.posterView.image = nil;
+    [cell.posterView setImageWithURL:posterURL];
+    
     
     return cell;
 }
