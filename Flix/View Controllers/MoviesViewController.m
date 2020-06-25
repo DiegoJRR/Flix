@@ -23,6 +23,21 @@
 @implementation MoviesViewController
 
 -(void) fetchMovies {
+    
+    
+    // Setup the alert message
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Network error" message:@"There was an error fetching the movies. Check your internet connection." preferredStyle:(UIAlertControllerStyleAlert)];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
+    
+    [alert addAction:cancelAction];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self fetchMovies];
+    }];
+    
+    [alert addAction:okAction];
+    
     // Set the url for the network request
     NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
     
@@ -38,6 +53,9 @@
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
            if (error != nil) {
                NSLog(@"%@", [error localizedDescription]);
+               [self presentViewController:alert animated:YES completion:^{
+                   // Optional code
+               }];
            }
            else {
                NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
