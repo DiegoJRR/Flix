@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) NSArray *movies;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -30,6 +31,8 @@
     
     // Instantiate a session to make requests to the Movies API
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
+    
+    [self.activityIndicator startAnimating];
     
     // Task to request data to API and handle results
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -49,6 +52,7 @@
            }
         
         [self.refreshControl endRefreshing];
+        [self.activityIndicator stopAnimating];
        }];
     [task resume];
 }
