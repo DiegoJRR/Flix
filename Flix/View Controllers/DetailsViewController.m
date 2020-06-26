@@ -31,7 +31,7 @@
     [self.posterView setImageWithURL:posterURL];
     
 
-    // Check if the movie dictionary was a backdrop path, if not, use the poster path
+    // Check if the movie dictionary has a backdrop path, if not, use the poster path
     NSString *backdropURLString = nil;
     if ([self.movie[@"backdrop_path"]  isKindOfClass:[NSNull class]]) {
         backdropURLString = self.movie[@"poster_path"];
