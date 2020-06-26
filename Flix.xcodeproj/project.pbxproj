@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		264D82DD8364370E61BFA291 /* Pods_Flix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BF50AF876A9FB330A698B25 /* Pods_Flix.framework */; };
+		2F0FF82F24A65931009DEB3C /* MoviesGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0FF82E24A65931009DEB3C /* MoviesGridViewController.m */; };
+		2F0FF83224A65B6A009DEB3C /* MovieCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F0FF83124A65B6A009DEB3C /* MovieCollectionCell.m */; };
 		2F171D2724A3F77000A07642 /* MovieCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F171D2624A3F77000A07642 /* MovieCell.m */; };
 		2FD7537724A3BCD600FE89C5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD7537624A3BCD600FE89C5 /* AppDelegate.m */; };
 		2FD7537A24A3BCD600FE89C5 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2FD7537924A3BCD600FE89C5 /* SceneDelegate.m */; };
@@ -43,6 +45,10 @@
 /* Begin PBXFileReference section */
 		1CBC9035F5443DB3E808028B /* Pods-FlixTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlixTests.release.xcconfig"; path = "Target Support Files/Pods-FlixTests/Pods-FlixTests.release.xcconfig"; sourceTree = "<group>"; };
 		2CFED0353F798C1016264291 /* Pods-Flix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flix.debug.xcconfig"; path = "Target Support Files/Pods-Flix/Pods-Flix.debug.xcconfig"; sourceTree = "<group>"; };
+		2F0FF82D24A65931009DEB3C /* MoviesGridViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoviesGridViewController.h; sourceTree = "<group>"; };
+		2F0FF82E24A65931009DEB3C /* MoviesGridViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoviesGridViewController.m; sourceTree = "<group>"; };
+		2F0FF83024A65B6A009DEB3C /* MovieCollectionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MovieCollectionCell.h; sourceTree = "<group>"; };
+		2F0FF83124A65B6A009DEB3C /* MovieCollectionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MovieCollectionCell.m; sourceTree = "<group>"; };
 		2F171D2524A3F77000A07642 /* MovieCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MovieCell.h; sourceTree = "<group>"; };
 		2F171D2624A3F77000A07642 /* MovieCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MovieCell.m; sourceTree = "<group>"; };
 		2FD7537224A3BCD600FE89C5 /* Flix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,6 +183,8 @@
 			children = (
 				2F171D2524A3F77000A07642 /* MovieCell.h */,
 				2F171D2624A3F77000A07642 /* MovieCell.m */,
+				2F0FF83024A65B6A009DEB3C /* MovieCollectionCell.h */,
+				2F0FF83124A65B6A009DEB3C /* MovieCollectionCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -188,6 +196,8 @@
 				2FD753B524A3CD1100FE89C5 /* MoviesViewController.m */,
 				2FFF4ABB24A5562C00AB35A2 /* DetailsViewController.h */,
 				2FFF4ABC24A5562C00AB35A2 /* DetailsViewController.m */,
+				2F0FF82D24A65931009DEB3C /* MoviesGridViewController.h */,
+				2F0FF82E24A65931009DEB3C /* MoviesGridViewController.m */,
 			);
 			name = "View Controllers";
 			path = "/Users/diegojrr/Desktop/CodePath iOS Training/Week 1/Flix/Flix/View Controllers";
@@ -458,8 +468,10 @@
 				2F171D2724A3F77000A07642 /* MovieCell.m in Sources */,
 				2FD7538824A3BCD800FE89C5 /* main.m in Sources */,
 				2FFF4ABD24A5562C00AB35A2 /* DetailsViewController.m in Sources */,
+				2F0FF83224A65B6A009DEB3C /* MovieCollectionCell.m in Sources */,
 				2FD7537A24A3BCD600FE89C5 /* SceneDelegate.m in Sources */,
 				2FD753B624A3CD1100FE89C5 /* MoviesViewController.m in Sources */,
+				2F0FF82F24A65931009DEB3C /* MoviesGridViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
