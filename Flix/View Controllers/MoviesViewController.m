@@ -22,21 +22,23 @@
 
 @implementation MoviesViewController
 
+/**
+ fetchMovies is an instance method to request the first page of movies currently playing in theathers from The Movie Database API (https://developers.themoviedb.org/3/getting-started).
+ 
+ It saves the movies to a class property NSDictionary, and handles the AlertController for network errors and the activityIndicator
+ */
 -(void) fetchMovies {
-    
-    
     // Setup the alert message
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Network error" message:@"There was an error fetching the movies. Check your internet connection." preferredStyle:(UIAlertControllerStyleAlert)];
     
+    // Adding cancel and try again actions to the alert controller instance
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
-    
     [alert addAction:cancelAction];
 
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *tryAgain = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self fetchMovies];
     }];
-    
-    [alert addAction:okAction];
+    [alert addAction:tryAgain];
     
     // Set the url for the network request
     NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/now_playing?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed"];
@@ -58,17 +60,15 @@
                }];
            }
            else {
+               // Set the dataDirectionary with the request's response and store the results on the movies array property of the view controller
                NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-               
-               
                self.movies = dataDictionary[@"results"];
                
+               // Reload the table data to reflect changes
                [self.tableView  reloadData];
-               // TODO: Get the array of movies
-               // TODO: Store the movies in a property to use elsewhere
-               // TODO: Reload your table view data
            }
         
+        // Stop the refreshing animation and the activity indicator
         [self.refreshControl endRefreshing];
         [self.activityIndicator stopAnimating];
        }];
@@ -83,8 +83,8 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
+    // Fetch the movies from the API
     [self fetchMovies];
-    
     self.refreshControl = [[UIRefreshControl alloc] init];
     
     // Create target-action pair with the control value change that calls the fetchMovies function
@@ -109,16 +109,15 @@
     cell.titleLabel.text = movie[@"title"];
     cell.descriptionLabel.text = movie[@"overview"];
     
+    // Construct the poster URL
     NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLString = movie[@"poster_path"];
-    
     NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
-    
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
     
+    // Set poster to nil to remove the old one (when refreshing) and query for the new one
     cell.posterView.image = nil;
     [cell.posterView setImageWithURL:posterURL];
-    
     
     return cell;
 }
@@ -126,20 +125,20 @@
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    
+    // Set the tappedCell as the cell that initiated the segue
     UITableViewCell *tappedCell = sender;
     
+    // Get the corresponding indexPath of that cell
     NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+    
+    // Get the cell corresponding to that cell
     NSDictionary *movie = self.movies[indexPath.row];
     
+    // Set the viewController to segue into and pass the movie object
     DetailsViewController *detailsViewController = [segue destinationViewController];
-    
     detailsViewController.movie = movie;
 }
-
 
 @end

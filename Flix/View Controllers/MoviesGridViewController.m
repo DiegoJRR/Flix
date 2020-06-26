@@ -18,6 +18,11 @@
 
 @implementation MoviesGridViewController
 
+/**
+fetchMovies is an instance method to request the first page of movies similar to Blodshoot (id: 338762) from The Movie Database API. These are the ones considered Superheroe movies. (https://developers.themoviedb.org/3/getting-started).
+
+It saves the movies to a class property NSDictionary
+*/
 -(void) fetchMovies {
     // Set the url for the network request
     NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/338762/similar?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&language=en-US&page=1"];
@@ -39,10 +44,6 @@
                
                self.movies = dataDictionary[@"results"];
                [self.collectionView reloadData];
-               
-               // TODO: Get the array of movies
-               // TODO: Store the movies in a property to use elsewhere
-               // TODO: Reload your table view data
            }
         
        }];
@@ -59,12 +60,15 @@
     
     [self fetchMovies];
     
+    
+    // Instantiation and logic to layout the poster images in the collection.
     UICollectionViewFlowLayout *layout = (UICollectionViewFlowLayout *)self.collectionView.collectionViewLayout;
     
+    // The spacing between and number of posters per lines is constant, the cells resize accordingly
     layout.minimumInteritemSpacing = 2;
     layout.minimumLineSpacing = 2;
-    
     CGFloat postersPerLine = 3;
+    
     CGFloat itemWidth = (self.collectionView.frame.size.width - (postersPerLine - 1) * layout.minimumInteritemSpacing) / postersPerLine;
     CGFloat itemHeight = itemWidth * 1.5;
     
@@ -77,13 +81,13 @@
     
     NSDictionary *movie = self.movies[indexPath.item];
     
+    // Construct poster URL
     NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLString = movie[@"poster_path"];
-    
     NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
-    
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
     
+    // Set image to nil and load the image with AFNetworking
     cell.posterView.image = nil;
     [cell.posterView setImageWithURL:posterURL];
     
@@ -96,18 +100,18 @@
 
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    
+    // Set the tappedCell as the cell that initiated the segue
     UICollectionView *tappedCell = sender;
     
+    // Get the corresponding indexPath of that cell
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)tappedCell];
+    
+    // Get the cell corresponding to that cell
     NSDictionary *movie = self.movies[indexPath.row];
     
+    // Set the viewController to segue into and pass the movie object
     DetailsViewController *detailsViewController = [segue destinationViewController];
-    
     detailsViewController.movie = movie;
 }
 
