@@ -14,6 +14,8 @@
 @interface MoviesGridViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
 @property (nonatomic, strong) NSArray *movies;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @end
 
 @implementation MoviesGridViewController
@@ -24,6 +26,18 @@ fetchMovies is an instance method to request the first page of movies similar to
 It saves the movies to a class property NSDictionary
 */
 -(void) fetchMovies {
+    // Setup the alert message
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Network error" message:@"There was an error fetching the movies. Check your internet connection." preferredStyle:(UIAlertControllerStyleAlert)];
+    
+    // Adding cancel and try again actions to the alert controller instance
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}];
+    [alert addAction:cancelAction];
+
+    UIAlertAction *tryAgain = [UIAlertAction actionWithTitle:@"Try Again" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self fetchMovies];
+    }];
+    [alert addAction:tryAgain];
+    
     // Set the url for the network request
     NSURL *url = [NSURL URLWithString:@"https://api.themoviedb.org/3/movie/338762/similar?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed&language=en-US&page=1"];
     // Set the url request object
@@ -32,6 +46,7 @@ It saves the movies to a class property NSDictionary
     // Instantiate a session to make requests to the Movies API
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration] delegate:nil delegateQueue:[NSOperationQueue mainQueue]];
     
+    [self.activityIndicator startAnimating];
     
     // Task to request data to API and handle results
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
@@ -46,6 +61,9 @@ It saves the movies to a class property NSDictionary
                [self.collectionView reloadData];
            }
         
+        // Stop the refreshing animation and the activity indicator
+        [self.refreshControl endRefreshing];
+        [self.activityIndicator stopAnimating];
        }];
     [task resume];
 }
@@ -59,6 +77,11 @@ It saves the movies to a class property NSDictionary
     self.collectionView.delegate = self;
     
     [self fetchMovies];
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    
+    // Create target-action pair with the control value change that calls the fetchMovies function
+    [self.refreshControl addTarget:self action:@selector(fetchMovies) forControlEvents:UIControlEventValueChanged];
+    [self.collectionView insertSubview:self.refreshControl atIndex:0];
     
     
     // Instantiation and logic to layout the poster images in the collection.

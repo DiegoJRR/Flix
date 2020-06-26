@@ -51,10 +51,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <activityIndicatorView key="tableFooterView" hidden="YES" opaque="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="F7m-KB-roG">
-                            <rect key="frame" x="0.0" y="250" width="414" height="37"/>
+                        <activityIndicatorView key="tableFooterView" hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="YNg-zM-S4s">
+                            <rect key="frame" x="0.0" y="250" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="color" systemColor="systemGray2Color" red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </activityIndicatorView>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="194" id="PD5-FK-5kh" customClass="MovieCell">
@@ -95,13 +94,13 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Movies" id="Jyg-Z4-O9J"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="F7m-KB-roG" id="DdP-1z-BOI"/>
+                        <outlet property="activityIndicator" destination="YNg-zM-S4s" id="y31-gE-YDr"/>
                         <outlet property="tableView" destination="Fxd-y6-Jkr" id="hVx-qg-tgg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="180" y="379"/>
+            <point key="canvasLocation" x="179.71014492753625" y="378.34821428571428"/>
         </scene>
         <!--Movies Grid View Controller-->
         <scene sceneID="lt7-Pf-clB">
@@ -117,6 +116,10 @@
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
+                        <activityIndicatorView key="backgroundView" hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" id="W9L-bB-MI9">
+                            <rect key="frame" x="0.0" y="-88" width="414" height="896"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        </activityIndicatorView>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MovieCollectionCell" id="eoH-8o-5UL" customClass="MovieCollectionCell">
                                 <rect key="frame" x="0.0" y="0.0" width="147" height="256"/>
@@ -141,6 +144,7 @@
                     </collectionView>
                     <navigationItem key="navigationItem" id="fqC-Bl-3P6"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="W9L-bB-MI9" id="H6e-u2-mky"/>
                         <outlet property="collectionView" destination="BNN-bv-gaU" id="EoH-0Z-bCh"/>
                     </connections>
                 </viewController>
@@ -217,7 +221,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="0jV-sk-GMb"/>
+        <segue reference="ElN-EK-FQt"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="now_playing_tabbar_item" width="21" height="21"/>
