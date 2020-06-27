@@ -21,6 +21,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    // Give the view rounded corners
+    self.synopsisLabel.layer.cornerRadius = 10;
+    self.synopsisLabel.layer.masksToBounds = true;
+    
     // Construct the string for the poster and backdrop
     NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLString = self.movie[@"poster_path"];

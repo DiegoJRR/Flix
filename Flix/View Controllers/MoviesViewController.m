@@ -108,6 +108,22 @@
     cell.titleLabel.text = movie[@"title"];
     cell.descriptionLabel.text = movie[@"overview"];
     
+    cell.ratingLabel.text = nil;
+    cell.starView.alpha = 0;
+    
+    double movieRating = [movie[@"vote_average"] doubleValue];
+    if ([movie[@"vote_average"]  isKindOfClass:[NSNull class]]) {
+        cell.ratingLabel.text = @"-";
+        
+    } else if (movieRating >= 8.0) {
+        cell.ratingLabel.text = [NSString stringWithFormat:@"%.1f", movieRating];
+        cell.starView.alpha = 1;
+    } else {
+        cell.ratingLabel.text = [NSString stringWithFormat:@"%.1f", movieRating];
+    }
+    
+//    cell.ratingLabel.text = [cell.ratingLabel.text stringByAppendingString:@"/10"];
+    
     // Construct the poster URL
     NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
     NSString *posterURLString = movie[@"poster_path"];
