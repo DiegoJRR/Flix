@@ -110,10 +110,35 @@ It saves the movies to a class property NSDictionary
     NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
     NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
     
-    // Set image to nil and load the image with AFNetworking
-    cell.posterView.image = nil;
-    [cell.posterView setImageWithURL:posterURL];
+    // Create the request for the poster image
+    NSURLRequest *request = [NSURLRequest requestWithURL:posterURL];
     
+    // Set poster to nil to remove the old one (when refreshing) and query for the new one
+    cell.posterView.image = nil;
+    
+    // Instantiate a weak link to the cell and fade in the image in the request
+    __weak MovieCollectionCell *weakSelf = cell;
+    [weakSelf.posterView setImageWithURLRequest:request placeholderImage:nil
+                    success:^(NSURLRequest *imageRequest, NSHTTPURLResponse *imageResponse, UIImage *image) {
+                        
+                        // imageResponse will be nil if the image is cached
+                        if (imageResponse) {
+                            weakSelf.posterView.alpha = 0.0;
+                            weakSelf.posterView.image = image;
+                            
+                            //Animate UIImageView back to alpha 1 over 0.3sec
+                            [UIView animateWithDuration:0.5 animations:^{
+                                weakSelf.posterView.alpha = 1.0;
+                            }];
+                        }
+                        else {
+                            weakSelf.posterView.image = image;
+                        }
+                    }
+                    failure:^(NSURLRequest *request, NSHTTPURLResponse * response, NSError *error) {
+                        // do something for the failure condition
+                    }];
+
     return cell;
 }
 
