@@ -15,19 +15,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="launch_image" translatesAutoresizingMaskIntoConstraints="NO" id="ISF-Vp-2fI">
-                                <rect key="frame" x="138" y="341" width="138" height="139"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="launch_image" translatesAutoresizingMaskIntoConstraints="NO" id="ISF-Vp-2fI">
+                                <rect key="frame" x="138" y="383.5" width="138" height="139"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="FLIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2MJ-WD-MKw">
-                                <rect key="frame" x="172" y="507" width="71" height="48"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FLIX" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2MJ-WD-MKw">
+                                <rect key="frame" x="171.5" y="532.5" width="71" height="48"/>
                                 <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="40"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="ISF-Vp-2fI" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="9nA-M5-zQd"/>
+                            <constraint firstItem="2MJ-WD-MKw" firstAttribute="top" secondItem="ISF-Vp-2fI" secondAttribute="bottom" constant="10" id="BlD-y8-PG1"/>
+                            <constraint firstItem="ISF-Vp-2fI" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="Ira-oI-YH7"/>
+                            <constraint firstItem="2MJ-WD-MKw" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="jgc-f5-1ph"/>
+                            <constraint firstItem="ISF-Vp-2fI" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="qPZ-oJ-drs"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
