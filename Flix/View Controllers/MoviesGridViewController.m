@@ -10,9 +10,10 @@
 #import "MovieCollectionCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "DetailsViewController.h"
+#import "Movie.h"
 
 @interface MoviesGridViewController () <UICollectionViewDataSource, UICollectionViewDelegate>
-@property (nonatomic, strong) NSArray *movies;
+@property (nonatomic, strong) NSMutableArray *movies;
 @property (strong, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
@@ -57,7 +58,16 @@ It saves the movies to a class property NSDictionary
                NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
                
                
-               self.movies = dataDictionary[@"results"];
+               NSArray *dictionaries = dataDictionary[@"results"];
+               
+               for (NSDictionary *dictionary in dictionaries) {
+                   // Allocate memory for object and initialize it with the dictionary
+                   Movie *movie = [[Movie alloc] initWithDictionary:dictionary];
+                   
+                   // Add the object to the movies array
+                   [self.movies addObject:movie];
+               }
+               
                [self.collectionView reloadData];
            }
         
@@ -72,6 +82,7 @@ It saves the movies to a class property NSDictionary
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.movies = [[NSMutableArray alloc] init];
     
     self.collectionView.dataSource = self;
     self.collectionView.delegate = self;
@@ -102,16 +113,10 @@ It saves the movies to a class property NSDictionary
     
     MovieCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MovieCollectionCell" forIndexPath:indexPath];
     
-    NSDictionary *movie = self.movies[indexPath.item];
-    
-    // Construct poster URL
-    NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
-    NSString *posterURLString = movie[@"poster_path"];
-    NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
-    NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
+    Movie *movie = self.movies[indexPath.item];
     
     // Create the request for the poster image
-    NSURLRequest *request = [NSURLRequest requestWithURL:posterURL];
+    NSURLRequest *request = [NSURLRequest requestWithURL:movie.posterURL];
     
     // Set poster to nil to remove the old one (when refreshing) and query for the new one
     cell.posterView.image = nil;
@@ -156,7 +161,7 @@ It saves the movies to a class property NSDictionary
     NSIndexPath *indexPath = [self.collectionView indexPathForCell:(UICollectionViewCell *)tappedCell];
     
     // Get the cell corresponding to that cell
-    NSDictionary *movie = self.movies[indexPath.row];
+    Movie *movie = self.movies[indexPath.row];
     
     // Set the viewController to segue into and pass the movie object
     DetailsViewController *detailsViewController = [segue destinationViewController];

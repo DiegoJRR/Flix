@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSURL *posterURL;
 @property (nonatomic, strong) NSURL *backdropURL;
 @property (nonatomic, strong) NSString *synopsis;
-@property (nonatomic) double voteAverage;
+@property (nonatomic, strong) NSNumber *voteAverage;
 
 // Method to initialize an instance of the Movie object from a dictionary (as the one received from the API)
 - (id)initWithDictionary:(NSDictionary *)dictionary;

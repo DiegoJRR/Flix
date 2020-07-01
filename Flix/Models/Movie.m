@@ -22,7 +22,11 @@
     
     self.posterURL = [NSURL URLWithString:fullPosterURLString];
     self.synopsis = dictionary[@"overview"];
-    self.voteAverage = [dictionary[@"vote_average"] doubleValue];
+    if ([dictionary[@"vote_average"]  isKindOfClass:[NSNull class]]) {
+        self.voteAverage = @(-1);
+    } else {
+        self.voteAverage = (NSNumber *)dictionary[@"vote_average"];
+    }
     
     // Check if the backdrop_path exists, if not, use the poster path
     NSString *backdropURLString = nil;
