@@ -10,11 +10,12 @@
 #import "MovieCell.h"
 #import "UIImageView+AFNetworking.h"
 #import "DetailsViewController.h"
+#import "Movie.h"
 
 @interface MoviesViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-@property (nonatomic, strong) NSArray *movies;
+@property (nonatomic, strong) NSMutableArray *movies;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
@@ -62,7 +63,16 @@
            else {
                // Set the dataDirectionary with the request's response and store the results on the movies array property of the view controller
                NSDictionary *dataDictionary = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
-               self.movies = dataDictionary[@"results"];
+               
+               NSArray *dictionaries = dataDictionary[@"results"];
+                
+               for (NSDictionary *dictionary in dictionaries) {
+                   // Allocate memory for object and initialize it with the dictionary
+                   Movie *movie = [[Movie alloc] initWithDictionary:dictionary];
+                   
+                   // Add the object to the movies array
+                   [self.movies addObject:movie];
+               }
                
                // Reload the table data to reflect changes
                [self.tableView  reloadData];
@@ -78,6 +88,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.movies = [[NSMutableArray alloc] init];
     
     // Set self as dataSource and delegate for the tableView
     self.tableView.dataSource = self;
@@ -100,38 +111,26 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     MovieCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MovieCell"];
-    
-    // Get the movie for the corresponding row from the class property
-    NSDictionary *movie = self.movies[indexPath.row];
+    // Get the movie for the corresponding row from the movies array
+    Movie *movie = self.movies[indexPath.row];
     
     // Set the text of the cell to the movie title
-    cell.titleLabel.text = movie[@"title"];
-    cell.descriptionLabel.text = movie[@"overview"];
+    cell.titleLabel.text = movie.title;
+    cell.descriptionLabel.text = movie.synopsis;
     
     cell.ratingLabel.text = nil;
     cell.starView.alpha = 0;
-    
-    double movieRating = [movie[@"vote_average"] doubleValue];
-    if ([movie[@"vote_average"]  isKindOfClass:[NSNull class]]) {
+    if ([movie.voteAverage isEqualToNumber:@(-1)]) {
         cell.ratingLabel.text = @"-";
-        
-    } else if (movieRating >= 8.0) {
-        cell.ratingLabel.text = [NSString stringWithFormat:@"%.1f", movieRating];
+    } else if ([movie.voteAverage intValue] >= 8) {
+        cell.ratingLabel.text = [NSString stringWithFormat:@"%.1f", [movie.voteAverage doubleValue]];
         cell.starView.alpha = 1;
     } else {
-        cell.ratingLabel.text = [NSString stringWithFormat:@"%.1f", movieRating];
+        cell.ratingLabel.text = [NSString stringWithFormat:@"%.1f", [movie.voteAverage doubleValue]];
     }
     
-//    cell.ratingLabel.text = [cell.ratingLabel.text stringByAppendingString:@"/10"];
-    
-    // Construct the poster URL
-    NSString *baseURLString = @"https://image.tmdb.org/t/p/w500";
-    NSString *posterURLString = movie[@"poster_path"];
-    NSString *fullPosterURLString = [baseURLString stringByAppendingString:posterURLString];
-    NSURL *posterURL = [NSURL URLWithString:fullPosterURLString];
-    
     // Create the request for the poster image
-    NSURLRequest *request = [NSURLRequest requestWithURL:posterURL];
+    NSURLRequest *request = [NSURLRequest requestWithURL:movie.posterURL];
     
     // Set poster to nil to remove the old one (when refreshing) and query for the new one
     cell.posterView.image = nil;
@@ -170,11 +169,11 @@
     // Set the tappedCell as the cell that initiated the segue
     UITableViewCell *tappedCell = sender;
     
-    // Get the corresponding indexPath of that cell
+    // Get the corresponding indexPath of the cell
     NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
     
-    // Get the cell corresponding to that cell
-    NSDictionary *movie = self.movies[indexPath.row];
+    // Get the movie corresponding to that cell
+    Movie *movie = self.movies[indexPath.row];
     
     // Set the viewController to segue into and pass the movie object
     DetailsViewController *detailsViewController = [segue destinationViewController];
